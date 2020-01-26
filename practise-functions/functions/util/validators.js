@@ -40,6 +40,14 @@ exports.validateSignupData = (data) => {
       valid: Object.keys(errors).length === 0 ? true : false
     };
   };
+
+  exports.reduceUserDetails = (data) => {
+    let userDetails = {};
+
+    if(!isEmpty(data.location.trim())) userDetails.location = data.location;
+
+    return userDetails;
+  };
   
 
 
