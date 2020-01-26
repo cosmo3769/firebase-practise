@@ -13,7 +13,8 @@ let db = {
       {
         userHandle: 'user',
         body: 'This is a sample scream',
-        createdAt: '2019-03-15T10:59:52.798Z'
+        createdAt: '2019-03-15T10:59:52.798Z',
+        imageUrl: ''
       }
     ]
 };
