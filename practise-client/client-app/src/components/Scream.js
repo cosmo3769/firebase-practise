@@ -6,6 +6,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import PropTypes from 'prop-types';
 import MyButton from '../util/MyButton';
 import DeleteScream from './DeleteScream';
+import ScreamDialog from './ScreamDialog';
 
 //MUI stuff
 //import { makeStyles } from '@material-ui/core/styles';
@@ -128,11 +129,11 @@ class Scream extends Component {
             <ChatIcon color="primary" />
           </MyButton>
           <span>{commentCount} comments</span>
-          {/* <ScreamDialog
+          <ScreamDialog
             screamId={screamId}
             userHandle={userHandle}
-            openDialog={this.props.openDialog}
-          /> */}
+            // openDialog={this.props.openDialog}
+          />
                 </CardContent>
             </Card>
         );
