@@ -7,8 +7,8 @@ import {
     SET_UNAUTHENTICATED,
     LOADING_USER,
     LIKE_SCREAM,
-    UNLIKE_SCREAM
-    // MARK_NOTIFICATIONS_READ
+    UNLIKE_SCREAM,
+    MARK_NOTIFICATIONS_READ
   } from '../types';
   
   const initialState = {
@@ -57,7 +57,12 @@ import {
           (like) => like.screamId !== action.payload.screamId
         )
       };
-            default:
-                return state;
-            }
-          }
+    case MARK_NOTIFICATIONS_READ:
+      state.notifications.forEach((not) => (not.read = true));
+      return {
+        ...state
+      };
+    default:
+      return state;
+      }
+}

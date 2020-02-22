@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import MyButton from '../util/MyButton';
-// import LikeButton from './LikeButton';
-// import Comments from './Comments';
-// import CommentForm from './CommentForm';
+import MyButton from '../../util/MyButton';
+import LikeButton from './LikeButton';
+import Comments from './Comments';
+import CommentForm from './CommentForm';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 // MUI Stuff
@@ -16,15 +16,20 @@ import Typography from '@material-ui/core/Typography';
 // Icons
 import CloseIcon from '@material-ui/icons/Close';
 import UnfoldMore from '@material-ui/icons/UnfoldMore';
-// import ChatIcon from '@material-ui/icons/Chat';
+import ChatIcon from '@material-ui/icons/Chat';
 // Redux stuff
 import { connect } from 'react-redux';
-import { getScream } from '../redux/actions/dataActions';
+import { getScream, clearErrors } from '../../redux/actions/dataActions';
 
 const styles = {
     invisibleSeperator: {
         border: 'none',
         margin: 4
+    },
+    visibleSeperator: {
+      width: '100%',
+      borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+      marginBottom: 20
     },
     profileImage: {
       maxWidth: 200,
@@ -52,17 +57,33 @@ const styles = {
 
   class ScreamDialog extends Component {
     state = {
-      open: false
-    //   oldPath: '',
-    //   newPath: ''
+      open: false,
+      oldPath: '',
+      newPath: ''
     };
+    componentDidMount() {
+      if (this.props.openDialog) {
+        this.handleOpen();
+      }
+    }
     handleOpen = () => {
-        this.setState({ open: true });
-        this.props.getScream(this.props.screamId);
-    }
+      let oldPath = window.location.pathname;
+  
+      const { userHandle, screamId } = this.props;
+      const newPath = `/users/${userHandle}/scream/${screamId}`;
+  
+      if (oldPath === newPath) oldPath = `/users/${userHandle}`;
+  
+      window.history.pushState(null, null, newPath);
+  
+      this.setState({ open: true, oldPath, newPath });
+      this.props.getScream(this.props.screamId);
+    };
     handleClose = () => {
-        this.setState({ open: false });
-    }
+      window.history.pushState(null, null, this.state.oldPath);
+      this.setState({ open: false });
+      this.props.clearErrors();
+    };
 
     render() {
         const {
@@ -104,16 +125,16 @@ const styles = {
                 </Typography>
                 <hr className={classes.invisibleSeparator} />
                 <Typography variant="body1">{body}</Typography>
-                {/* <LikeButton screamId={screamId} />
+                <LikeButton screamId={screamId} />
                 <span>{likeCount} likes</span>
                 <MyButton tip="comments">
                   <ChatIcon color="primary" />
                 </MyButton>
-                <span>{commentCount} comments</span> */}
+                <span>{commentCount} comments</span>
               </Grid>
-              {/* <hr className={classes.visibleSeparator} />
+              <hr className={classes.visibleSeparator} />
               <CommentForm screamId={screamId} />
-              <Comments comments={comments} /> */}
+              <Comments comments={comments} />
             </Grid>
           );
 
@@ -150,7 +171,7 @@ const styles = {
     
   
   ScreamDialog.propTypes = {
-    // clearErrors: PropTypes.func.isRequired,
+    clearErrors: PropTypes.func.isRequired,
     getScream: PropTypes.func.isRequired,
     screamId: PropTypes.string.isRequired,
     userHandle: PropTypes.string.isRequired,
@@ -164,8 +185,8 @@ const styles = {
   });
   
   const mapActionsToProps = {
-    getScream
-    // clearErrors
+    getScream,
+    clearErrors
   };
   
   export default connect(

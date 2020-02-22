@@ -1,0 +1,122 @@
+//Scream.js
+
+import React, { Component } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Link from 'react-router-dom/Link';
+
+//MUI stuff
+//import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+//import CardActionArea from '@material-ui/core/CardActionArea';
+//import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+//import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+
+
+
+const styles = {
+    card: {
+        display: 'flex',
+        marginBottom: 30,
+    },
+    image: {
+        minWidth: 500
+    },
+    content: {
+        padding: 50,
+        objectFit: 'cover',
+    }
+};
+
+
+class Scream extends Component {
+    render() {
+        // console.log(this.props.scream)
+        // const { 
+        //     classes, 
+        //     scream
+        //  } = this.props;
+
+        let newClasses = this.props.classes;
+
+        const newScream = this.props.scream;
+        return (
+            <Card className={newClasses.card}>
+                <p>{newScream.userHandle}</p>
+                <p>{" \n"}</p>
+                <p>{newScream.body}</p>
+            </Card>
+        );
+    }
+
+}
+
+export default (withStyles(styles)(Scream));
+
+//home.js
+
+import React, { Component } from 'react';
+import axios from 'axios';
+import Grid from '@material-ui/core/Grid';
+
+import Scream from '../components/Scream';
+
+class home extends Component {
+    state = {
+        screams: []
+    };
+    componentWillMount() {
+      axios.get('/screams')
+        .then((res) => {
+            console.log(res.data);
+            this.setState({
+                screams: res.data,
+            });
+        })
+        .catch((err) => console.log(err));
+    }
+    render() {
+
+
+        //console.log("HEy ", this.state.screams)
+
+
+
+        return (
+            <Grid container spacing={16}>
+                <Grid item sm={8} xs={12}>
+                    {
+                         this.state.screams.map(scream => {
+                             console.log(scream)
+                            return <Scream scream={scream} />
+                         }
+                         
+                        )
+                    }
+                   
+
+
+                        ​
+                </Grid>
+                <Grid item sm={4} xs={12}>
+                    <p>Profile...</p>
+                </Grid>
+            </Grid>
+        );
+    }
+}
+
+export default home;
+
+
+//MUI stuff
+//import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+//import CardActionArea from '@material-ui/core/CardActionArea';
+//import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+//import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';

@@ -6,7 +6,7 @@ import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import jwtDecode from 'jwt-decode';
 
 //Components
-import Navbar from './components/Navbar';
+import Navbar from './components/layout/Navbar';
 import AuthRoute from './util/AuthRoute';
 
 // Redux
@@ -19,6 +19,7 @@ import { logoutUser, getUserData } from './redux/actions/userActions';
 import home from './pages/home';
 import login from './pages/login';
 import signup from './pages/signup';
+import user from './pages/user';
 
 import axios from 'axios';
 
@@ -103,6 +104,12 @@ class App extends Component {
                 <AuthRoute 
                 exact path="/signup" 
                 component={signup} 
+                />
+                <Route exact path="/users/:handle" component={user}/>
+                <Route
+                  exact
+                  path="/users/:handle/scream/:screamId"
+                  component={user}
                 />
               </Switch>
              </div>
